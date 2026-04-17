@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Helpdesk Ticket Prioritizer</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 60px;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        textarea {
+            width: 400px;
+            height: 100px;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-top: 10px;
+        }
+
+        select, button {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 30px;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #444;
+        }
+
+        th {
+            background: #3b82f6;
+        }
+
+        .critical { color: red; }
+        .high { color: orange; }
+        .medium { color: gold; }
+        .low { color: lightgreen; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Helpdesk Ticket Prioritizer</h1>
+
+    <form method="POST">
+        <textarea name="ticket" placeholder="Enter your issue..." required></textarea><br>
+
+        <select name="department">
+            <option>IT</option>
+            <option>HR</option>
+            <option>Finance</option>
+            <option>Sales</option>
+            <option>Operations</option>
+        </select><br>
+
+        <button type="submit">Predict Priority</button>
+    </form>
+
+    <form method="POST" action="/clear">
+        <button type="submit">Clear Queue</button>
+    </form>
+
+    <h2>Ticket Queue</h2>
+
+    <table>
+        <tr>
+            <th>Ticket</th>
+            <th>Department</th>
+            <th>Priority</th>
+        </tr>
+
+        {% for item in queue %}
+        <tr>
+            <td>{{ item.text }}</td>
+            <td>{{ item.department }}</td>
+            <td>
+                <b class="
+                    {% if item.priority == 'Critical' %}critical{% endif %}
+                    {% if item.priority == 'High' %}high{% endif %}
+                    {% if item.priority == 'Medium' %}medium{% endif %}
+                    {% if item.priority == 'Low' %}low{% endif %}
+                ">
+                    {{ item.priority }}
+                </b>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
